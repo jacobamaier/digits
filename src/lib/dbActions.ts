@@ -1,7 +1,7 @@
 'use server';
 
 import { Condition } from '../../generated/prisma/enums';
-import { Stuff } from '../../generated/prisma/client';
+import { Stuff, Contact } from '../../generated/prisma/client';
 import { hash } from 'bcrypt';
 import { redirect } from 'next/navigation';
 import { prisma } from './prisma';
@@ -29,6 +29,36 @@ export async function addStuff(stuff: { name: string; quantity: number; owner: s
     },
   });
   // After adding, redirect to the list page
+  redirect('/list');
+}
+export async function addContact(contact: { firstName: string; lastName: string; address: string; image: string; description: string; owner: string }) {
+  // console.log(`addContact data: ${JSON.stringify(contact, null, 2)}`);
+  await prisma.contact.create({
+    data: {
+      firstName: contact.firstName,
+      lastName: contact.lastName,
+      address: contact.address,
+      image: contact.image,
+      description: contact.description,
+      owner: contact.owner,
+    },
+  });
+  redirect('/list');
+}
+
+export async function editContact(contact: Contact) {
+  // console.log(`editContact data: ${JSON.stringify(contact, null, 2)}`);
+  await prisma.contact.update({
+    where: { id: contact.id },
+    data: {
+      firstName: contact.firstName,
+      lastName: contact.lastName,
+      address: contact.address,
+      image: contact.image,
+      description: contact.description,
+      owner: contact.owner,
+    },
+  });
   redirect('/list');
 }
 
