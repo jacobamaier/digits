@@ -81,6 +81,17 @@ export async function editStuff(stuff: Stuff) {
   redirect('/list');
 }
 
+export async function addNote(note: { note: string; owner: string; contactId: number}) {
+  // console.log(`addNote data: ${JSON.stringify(note, null, 2)}`);
+  await prisma.note.create({
+    data: {
+      note: note.note,
+      owner: note.owner,
+      contactId: note.contactId,
+    },
+  });
+}
+
 /**
  * Deletes an existing stuff from the database.
  * @param id, the id of the stuff to delete.
